@@ -1,8 +1,18 @@
-:root{
-  --night:#0e2a47; --sky:#eaf4fb; --sun:#ffc61a; --panel:#0b7a75; --road:#2b2f36; --paper:#fff; --text:#16202b;
+:root {
+  --night: #000000; /* Purdue Black */
+  --sky: #f4f4f4; 
+  --sun: #ceb888; /* Purdue Gold */
+  --panel: #b1810b; /* Darker gold for accessible link contrast */
+  --road: #1a1a1a; 
+  --paper: #ffffff; 
+  --text: #000000;
 }
-@media (prefers-color-scheme:dark){
-  :root{--sky:#0a1a2c; --paper:#0e2238; --text:#e8eef5}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sky: #000000; 
+    --paper: #121212; 
+    --text: #ffffff;
+  }
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}

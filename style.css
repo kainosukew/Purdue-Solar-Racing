@@ -2,7 +2,7 @@
   --night:#000000; --sky:#eaf4fb; --sun:#ffc61a; --panel:#0b7a75; --road:#2b2f36; --paper:#fff; --text:#16202b;
 }
 @media (prefers-color-scheme:dark){
-  :root{--sky:#0a1a2c; --paper:#0e2238; --text:#e8eef5}
+  :root{--sky:#000000; --paper:#0e2238; --text:#e8eef5}
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}

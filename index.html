@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!-- font-size: 22.4px is exactly 40% larger than the default 16px. This scales all rem-based Tailwind sizes globally. -->
+<html lang="en" class="scroll-smooth" style="font-size: 22.4px;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purdue Solar Racing | Mechanical Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        purdue: {
+                            gold: '#CEB888',
+                            dark: '#000000',
+                            gray: '#1a1a1a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body, html {
+            background-color: #000000;
+            color: #f3f4f6;
+            /* CRITICAL: Prevents horizontal scrollbars from the car starting off-screen */
+            overflow-x: hidden; 
+            width: 100%;
+            position: relative;
+        }
+
+        /* 
+         * Car container is now positioned absolutely within its track container.
+         * It sits perfectly at the bottom right.
+         */
+        #car-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            /* Starts exactly halfway exposed off the right edge */
+            transform: translateX(50%);
+            z-index: 50;
+            pointer-events: none; 
+            
+            /* Width set to 84vw for a larger presence */
+            width: 84vw; 
+            min-width: 700px;
+            max-width: 1260px;
+            will-change: transform;
+            transition: transform 0.1s ease-out; 
+        }
+
+        #car-container img {
+            width: 100%;
+            height: auto;
+            display: block; /* Removes bottom spacing on inline images */
+            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.9));
+            /* Slight downward nudge if needed to sit directly on the bottom border */
+            transform: translateY(2px);
+        }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(206, 184, 136, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(206, 184, 136, 0.07) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+    </style>
+</head>
+<body class="grid-bg antialiased selection:bg-purdue-gold selection:text-black">
+
+    <!-- 
+      Main is now w-full so inner sections can span full width (like the track).
+      Text content is restricted using max-w-4xl mx-auto.
+    -->
+    <main class="relative z-10 flex flex-col items-center w-full pb-40 overflow-hidden">
+        
+        <!-- Hero Section -->
+        <section class="min-h-[100vh] flex flex-col justify-center w-full pt-20">
+            
+            <!-- Hero Text Content (Constrained Width) -->
+            <div class="w-full max-w-4xl mx-auto px-6 z-10 relative">
+                <div class="border-l-4 border-purdue-gold pl-6 mb-6">
+                    <h3 class="text-purdue-gold text-xl md:text-2xl tracking-widest uppercase font-semibold">Purdue Solar Racing</h3>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight mb-8 text-white">
+                    Full speed on an <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purdue-gold to-yellow-700">Empty Tank.</span>
+                </h1>
+                <p class="text-xl md:text-3xl text-gray-300 max-w-2xl leading-relaxed bg-black/40 p-4 rounded-xl backdrop-blur-sm shadow-xl border border-gray-800">
+                    Designing, building, and racing solar-powered cars since 1991.
+                </p>
+            </div>
+
+            <!-- Track Line Container (Full Width) -->
+            <div class="relative w-full h-48 md:h-64 mt-12 border-b-[3px] border-purdue-gold/40 mb-12">
+                <div id="car-container">
+                    <!-- Using URL encoded space (%20) for strict server compatibility -->
+                    <img src="New%20Project.png" alt="Purdue Solar Car CAD Model" onerror="this.src='https://placehold.co/1200x400/1a1a1a/CEB888?text=New+Project.png+Missing'" />
+                </div>
+            </div>
+            
+            <!-- Bounce Arrow (Constrained Width, placed below the track) -->
+            <div class="w-full max-w-4xl mx-auto px-6 z-10 flex justify-start">
+                <div class="animate-bounce w-12 h-12 flex items-center justify-center rounded-full bg-purdue-gray/50 border border-gray-700 shadow-lg">
+                    <svg class="w-6 h-6 text-purdue-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Front Suspension Section -->
+        <section class="flex flex-col justify-center w-full py-24">
+            <div class="w-full max-w-4xl mx-auto px-6">
+                <div class="bg-black/80 p-10 md:p-14 rounded-3xl border border-gray-800 shadow-2xl backdrop-blur-md">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-8 text-white border-b border-gray-700 pb-6">Front Suspension Dynamics</h2>
+                    
+                    <div class="prose prose-invert prose-lg max-w-none">
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            The core of our vehicle's handling characteristics lies within a custom-engineered double-wishbone architecture. The primary objective for this system was the absolute minimization of unsprung mass, all while strictly adhering to camber and toe compliance targets under maximum cornering thresholds.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed mb-8">
+                            Constructed from thin-wall chromoly tubing and paired with precision dampeners, the vehicle maintains an incredibly responsive ride profile. The kinematic geometry underwent rigorous iteration cycles to ensure the tire contact patch remains optimal regardless of track undulations.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                            <div class="bg-purdue-gray p-6 rounded-xl border border-gray-700">
+                                <h4 class="text-purdue-gold font-bold mb-2 text-xl">Double A-Arm</h4>
+                                <p class="text-sm text-gray-400">Optimized roll center migration and camber gain during severe cornering loads.</p>
+                            </div>
+                            <div class="bg-purdue-gray p-6 rounded-xl border border-gray-700">
+                                <h4 class="text-purdue-gold font-bold mb-2 text-xl">Ackerman Steering</h4>
+                                <p class="text-sm text-gray-400">Custom machined steering rack mounts to eliminate scrub radius drag during turns.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Siemens NX Uprights Section -->
+        <section class="flex flex-col justify-center w-full py-24">
+            <div class="w-full max-w-4xl mx-auto px-6">
+                <div class="bg-gradient-to-br from-gray-900 to-black p-10 md:p-14 rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-purdue-gold/5 rounded-full blur-3xl"></div>
+                    
+                    <h2 class="text-4xl md:text-5xl font-bold mb-8 text-white relative z-10">Uprights & Siemens NX</h2>
+                    
+                    <div class="relative z-10 space-y-8">
+                        <p class="text-xl text-purdue-gold font-semibold">
+                            Bridging the gap between theory and reality.
+                        </p>
+                        
+                        <p class="text-lg text-gray-300 leading-relaxed">
+                            The front and rear uprights act as the vital junction for the wheels, suspension arms, and brake systems. Machined from aerospace-grade 7075-T6 aluminum, these components were subject to intense topological optimization protocols.
+                        </p>
+                        
+                        <div class="bg-black/50 p-6 border-l-4 border-purdue-gold rounded-r-xl">
+                            <p class="text-gray-300 leading-relaxed">
+                                Leveraging the power of <strong>Siemens NX</strong> and NX Nastran, our mechanical team executed complex Finite Element Analysis (FEA). We simultaneously simulated 3G bump, 1.5G braking, and 2G cornering loads. NX's robust CAE environment allowed us to iteratively strip away material where stress concentrations were lowest, shedding crucial grams while maintaining a strict 1.4+ factor of safety.
+                            </p>
+                        </div>
+                        
+                        <div class="pt-6">
+                            <div class="flex justify-between text-sm text-gray-400 mb-2">
+                                <span>Topological Mass Reduction</span>
+                                <span>85% Optimized</span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="w-[85%] h-full bg-gradient-to-r from-yellow-700 to-purdue-gold rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const carContainer = document.getElementById('car-container');
+            
+            // Listen for window scroll events
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                
+                // Speed multiplier controls how fast the car moves horizontally.
+                const speedMultiplier = 1.8; 
+                const moveX = scrollY * speedMultiplier;
+                
+                // Updates only the horizontal translation.
+                // The car sits inside the track container, so as you scroll down,
+                // the entire track (and the car on it) physically moves up the screen
+                // with the rest of the document flow.
+                carContainer.style.transform = `translateX(calc(50% - ${moveX}px))`;
+            });
+        });
+    </script>
+</body>
+</html>

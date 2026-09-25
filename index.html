@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- font-size: 22.4px is exactly 40% larger than the default 16px. This scales all rem-based Tailwind sizes globally. -->
-<html lang="en" class="scroll-smooth" style="font-size: 22.4px;">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purdue Solar Racing | Mechanical Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -25,6 +25,7 @@
             }
         }
     </script>
+
     <style>
         body, html {
             background-color: #000000;
@@ -35,80 +36,81 @@
             position: relative;
         }
 
-        /* 
-         * Car container is now positioned absolutely within its track container.
-         * It sits perfectly at the bottom right.
-         */
-        #car-container {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            /* Starts exactly halfway exposed off the right edge */
-            transform: translateX(50%);
-            z-index: 50;
-            pointer-events: none; 
-            
-            /* Width set to 84vw for a larger presence */
-            width: 84vw; 
-            min-width: 700px;
-            max-width: 1260px;
-            will-change: transform;
-            transition: transform 0.1s ease-out; 
-        }
-
-        #car-container img {
-            width: 100%;
-            height: auto;
-            display: block; /* Removes bottom spacing on inline images */
-            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.9));
-            /* Slight downward nudge if needed to sit directly on the bottom border */
-            transform: translateY(2px);
-        }
-
         .grid-bg {
             background-image: 
                 linear-gradient(rgba(206, 184, 136, 0.07) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(206, 184, 136, 0.07) 1px, transparent 1px);
             background-size: 60px 60px;
         }
+
+        /* 
+         * Car container is absolutely positioned within the track.
+         * It sits perfectly on the bottom border. 
+         * translateX(50%) starts it halfway off the right screen edge.
+         */
+        #car-container {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            transform: translateX(50%);
+            pointer-events: none; 
+            will-change: transform;
+            /* Smooths the scrolling movement slightly */
+            transition: transform 0.05s linear; 
+        }
+
+        #car-container img {
+            display: block;
+            /* Large width sizes ensuring it overlaps behind the text */
+            width: 900px; /* Mobile size */
+            max-width: none;
+            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.9));
+            /* Slight downward nudge to sit exactly on the line perfectly */
+            transform: translateY(3px); 
+        }
+
+        /* Desktop size */
+        @media (min-width: 1024px) {
+            #car-container img {
+                width: 1400px; 
+            }
+        }
     </style>
 </head>
 <body class="grid-bg antialiased selection:bg-purdue-gold selection:text-black">
 
-    <!-- 
-      Main is now w-full so inner sections can span full width (like the track).
-      Text content is restricted using max-w-4xl mx-auto.
-    -->
-    <main class="relative z-10 flex flex-col items-center w-full pb-40 overflow-hidden">
+    <main class="relative w-full flex flex-col items-center pb-40 overflow-hidden">
         
         <!-- Hero Section -->
-        <section class="min-h-[100vh] flex flex-col justify-center w-full pt-20">
+        <section class="relative min-h-screen flex flex-col justify-center w-full pt-32 pb-20">
             
-            <!-- Hero Text Content (Constrained Width) -->
-            <div class="w-full max-w-4xl mx-auto px-6 z-10 relative">
+            <!-- CAPTION TEXT LAYER (z-20: IN FRONT OF THE CAR) -->
+            <div class="relative z-20 w-full max-w-5xl mx-auto px-6 pointer-events-none">
                 <div class="border-l-4 border-purdue-gold pl-6 mb-6">
                     <h3 class="text-purdue-gold text-xl md:text-2xl tracking-widest uppercase font-semibold">Purdue Solar Racing</h3>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight mb-8 text-white">
+                <!-- Adding a subtle text shadow/glow so it remains legible over the car -->
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight mb-8 text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.9)]">
                     Full speed on an <br />
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purdue-gold to-yellow-700">Empty Tank.</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purdue-gold to-yellow-600 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">Empty Tank.</span>
                 </h1>
-                <p class="text-xl md:text-3xl text-gray-300 max-w-2xl leading-relaxed bg-black/40 p-4 rounded-xl backdrop-blur-sm shadow-xl border border-gray-800">
+                <!-- We restore pointer-events-auto here so the user can interact with the text box if needed -->
+                <p class="pointer-events-auto text-xl md:text-2xl text-gray-300 max-w-2xl leading-relaxed bg-black/60 p-6 rounded-xl backdrop-blur-md shadow-2xl border border-gray-800">
                     Designing, building, and racing solar-powered cars since 1991.
                 </p>
             </div>
 
-            <!-- Track Line Container (Full Width) -->
-            <div class="relative w-full h-48 md:h-64 mt-12 border-b-[3px] border-purdue-gold/40 mb-12">
-                <div id="car-container">
-                    <!-- Using URL encoded space (%20) for strict server compatibility -->
-                    <img src="New%20Project.png" alt="Purdue Solar Car CAD Model" onerror="this.src='https://placehold.co/1200x400/1a1a1a/CEB888?text=New+Project.png+Missing'" />
+            <!-- TRACK LAYER & CAR (z-10: BEHIND THE CAPTION TEXT) -->
+            <!-- The mt-8 places the track right below the caption paragraph. -->
+            <div class="relative z-10 w-full mt-12 md:mt-16 border-b-[3px] border-purdue-gold/40">
+                <div id="car-container" class="z-10">
+                    <!-- The car sits on the line. Because it is 1400px wide and very tall, it pushes UP into the text area. -->
+                    <img src="New%20Project.png" alt="Purdue Solar Car CAD Model" onerror="this.src='https://placehold.co/1400x400/1a1a1a/CEB888?text=New+Project.png+Missing'" />
                 </div>
             </div>
             
-            <!-- Bounce Arrow (Constrained Width, placed below the track) -->
-            <div class="w-full max-w-4xl mx-auto px-6 z-10 flex justify-start">
-                <div class="animate-bounce w-12 h-12 flex items-center justify-center rounded-full bg-purdue-gray/50 border border-gray-700 shadow-lg">
+            <div class="relative z-30 w-full max-w-5xl mx-auto px-6 mt-16 flex justify-start">
+                <div class="animate-bounce w-12 h-12 flex items-center justify-center rounded-full bg-purdue-gray/80 border border-gray-600 shadow-xl backdrop-blur-sm">
                     <svg class="w-6 h-6 text-purdue-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                     </svg>
@@ -116,10 +118,9 @@
             </div>
         </section>
 
-        <!-- Front Suspension Section -->
-        <section class="flex flex-col justify-center w-full py-24">
-            <div class="w-full max-w-4xl mx-auto px-6">
-                <div class="bg-black/80 p-10 md:p-14 rounded-3xl border border-gray-800 shadow-2xl backdrop-blur-md">
+        <section class="relative z-30 flex flex-col justify-center w-full py-24">
+            <div class="w-full max-w-5xl mx-auto px-6">
+                <div class="bg-black/90 p-10 md:p-14 rounded-3xl border border-gray-800 shadow-2xl backdrop-blur-lg">
                     <h2 class="text-4xl md:text-5xl font-bold mb-8 text-white border-b border-gray-700 pb-6">Front Suspension Dynamics</h2>
                     
                     <div class="prose prose-invert prose-lg max-w-none">
@@ -131,11 +132,11 @@
                         </p>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                            <div class="bg-purdue-gray p-6 rounded-xl border border-gray-700">
+                            <div class="bg-purdue-gray p-6 rounded-xl border border-gray-700 hover:border-purdue-gold/50 transition-colors">
                                 <h4 class="text-purdue-gold font-bold mb-2 text-xl">Double A-Arm</h4>
                                 <p class="text-sm text-gray-400">Optimized roll center migration and camber gain during severe cornering loads.</p>
                             </div>
-                            <div class="bg-purdue-gray p-6 rounded-xl border border-gray-700">
+                            <div class="bg-purdue-gray p-6 rounded-xl border border-gray-700 hover:border-purdue-gold/50 transition-colors">
                                 <h4 class="text-purdue-gold font-bold mb-2 text-xl">Ackerman Steering</h4>
                                 <p class="text-sm text-gray-400">Custom machined steering rack mounts to eliminate scrub radius drag during turns.</p>
                             </div>
@@ -145,11 +146,10 @@
             </div>
         </section>
 
-        <!-- Siemens NX Uprights Section -->
-        <section class="flex flex-col justify-center w-full py-24">
-            <div class="w-full max-w-4xl mx-auto px-6">
+        <section class="relative z-30 flex flex-col justify-center w-full py-24">
+            <div class="w-full max-w-5xl mx-auto px-6">
                 <div class="bg-gradient-to-br from-gray-900 to-black p-10 md:p-14 rounded-3xl border border-gray-800 shadow-2xl relative overflow-hidden">
-                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-purdue-gold/5 rounded-full blur-3xl"></div>
+                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-purdue-gold/5 rounded-full blur-3xl pointer-events-none"></div>
                     
                     <h2 class="text-4xl md:text-5xl font-bold mb-8 text-white relative z-10">Uprights & Siemens NX</h2>
                     
@@ -193,13 +193,12 @@
                 const scrollY = window.scrollY;
                 
                 // Speed multiplier controls how fast the car moves horizontally.
-                const speedMultiplier = 1.8; 
+                // 1.5 feels balanced for the 1400px car size.
+                const speedMultiplier = 1.5; 
                 const moveX = scrollY * speedMultiplier;
                 
-                // Updates only the horizontal translation.
-                // The car sits inside the track container, so as you scroll down,
-                // the entire track (and the car on it) physically moves up the screen
-                // with the rest of the document flow.
+                // Strictly horizontal movement along the track line.
+                // It starts at +50% and subtracts moveX to travel left.
                 carContainer.style.transform = `translateX(calc(50% - ${moveX}px))`;
             });
         });
